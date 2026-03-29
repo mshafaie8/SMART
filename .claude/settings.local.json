@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(conda run -n smart python -c \":*)"
+    ]
+  },
+  "outputStyle": "Explanatory"
+}
