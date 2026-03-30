@@ -295,6 +295,7 @@ def evaluate_scenario(data, processor, results, viz_dir=None, scenario_id='scene
         # error accumulation.
         anc_pos_i  = pos_c[:, win_start, :]    # [n, T_tok, 2]
         anc_head_i = heading_c[:, win_start]   # [n, T_tok]
+        anc_ok_i   = ~np.all(anc_pos_i == 0, axis=-1)  # [n, T_tok] exclude fill anchors
 
         world_i = decode_tokens(token_all_cat, tidx_c, anc_pos_i, anc_head_i)
         # world_i: [n, T_tok, 6, 4, 2]
@@ -302,8 +303,6 @@ def evaluate_scenario(data, processor, results, viz_dir=None, scenario_id='scene
         # Frame 0 of each token is the anchor itself; compare frames 1..shift
         for f in range(1, shift + 1):
             frames = np.minimum(win_start + f, T_full - 1)   # [T_tok]
-            # Guard: frame must be marked valid AND GT position must not be fill-value (0,0).
-            # valid_mask can be True for frames where position is still 0 in edge cases.
             gt_frame_valid = (fvalid_c[:, frames]
                               & ~np.all(pos_c[:, frames, :] == 0, axis=-1))  # [n, T_tok]
             gt_f   = gt_all[:, frames, :, :]                  # [n, T_tok, 4, 2]
@@ -314,7 +313,7 @@ def evaluate_scenario(data, processor, results, viz_dir=None, scenario_id='scene
             di_heading  = heading_err(pred_f, gt_f)
 
             for mov_flag, motion_str in [(True, 'moving'), (False, 'stationary')]:
-                sel = vmask_c & gt_frame_valid & (moving == mov_flag)
+                sel = vmask_c & anc_ok_i & gt_frame_valid & (moving == mov_flag)
                 if not sel.any():
                     continue
                 key = f'{cat}.{motion_str}.dense_indep'
