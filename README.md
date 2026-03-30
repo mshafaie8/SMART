@@ -123,6 +123,30 @@ Our model achieves the following performance on the [Waymo Open Motion Dataset S
 
 ![nuPlan Closed-loop Planning](assets/result1.png)
 
+
+## Tokenizer Eval
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                     corner L2 (m)           centroid L2 (m)           heading err (°)
+                           mean (median)             mean (median)             mean (median)             mean (median)
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+veh  moving      endpoint                            0.044 (0.030)             0.032 (0.025)             0.673 (0.292)
+veh  moving      dense_indep                         0.056 (0.041)             0.052 (0.037)             0.370 (0.218)
+veh  moving      dense_chain                         0.064 (0.040)             0.054 (0.036)             0.591 (0.261)
+
+veh  stationary  endpoint                            0.030 (0.027)             0.023 (0.022)             0.419 (0.398)
+veh  stationary  dense_indep                         0.021 (0.015)             0.018 (0.014)             0.196 (0.044)
+veh  stationary  dense_chain                         0.027 (0.025)             0.020 (0.017)             0.376 (0.349)
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ped  moving      endpoint                            0.016 (0.008)             0.013 (0.007)             0.636 (0.357)
+ped  moving      dense_indep                         0.024 (0.017)             0.019 (0.015)             1.015 (0.526)
+ped  moving      dense_chain                         0.035 (0.017)             0.030 (0.015)             1.080 (0.488)
+
+ped  stationary  endpoint                            0.042 (0.027)             0.035 (0.023)             1.781 (0.991)
+ped  stationary  dense_indep                         0.074 (0.042)             0.032 (0.020)             4.940 (2.347)
+ped  stationary  dense_chain                         0.076 (0.042)             0.037 (0.021)             4.898 (2.360)
+
 ## Citation 
 
 If you find this repository useful, please consider citing our work and giving us a star:
